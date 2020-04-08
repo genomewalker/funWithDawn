@@ -6,13 +6,14 @@ library(intergraph)
 library(networkDynamic)
 library(ndtv)
 library(wesanderson)
+library(tidytex)
 
 # From https://kateto.net/network-visualization
 
 # Read excel file
 input_file <- "data/90_articles_BB.xlsx"
 xls <- read_excel(input_file) %>%
-  select(-TotalLinks) %>%
+  select(-TotalLinks, -URL) %>%
   rename(time = ID) %>%
   mutate(node1 = row_number())
 
@@ -73,8 +74,8 @@ render.d3movie(g_dyn, usearrows = F,
                displaylabels = F,
                label = gn %v% "vertex.names",
                bg = "#ffffff",
-               vertex.border="#333333",
-               vertex.cex = function(slice){degree(slice)/7},
+               vertex.border = "#333333",
+               vertex.cex = function(slice){0.5 + degree(slice, )/7},
                vertex.col = g_dyn %v% "color",
                #edge.lwd = (net3.dyn %e% "weight")/3,
                edge.col = '#55555599',
